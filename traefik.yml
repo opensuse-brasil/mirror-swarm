@@ -1,0 +1,78 @@
+version: "3.5"
+
+services:
+  traefik:
+    image: "traefik:v2.4"
+    command:
+      # - "--accesslog"
+      - "--log.level=ERROR"
+      - "--api=true"
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.swarmmode=true"
+      - "--providers.docker.watch=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.http.address=:80"
+      - "--entrypoints.https.address=:443"
+      - "--entrypoints.rsync.address=:873"
+      - "--entrypoints.https.http.tls.certresolver=letsencrypt"
+      - "--entrypoints.https.http.tls.domains[0].main=opensuse.net.br"
+      - "--entrypoints.https.http.tls.domains[0].sans=*.opensuse.net.br"
+      - "--entrypoints.rsync.address=:873"
+      - "--certificatesresolvers.letsencrypt.acme.email=contato@opensuse.net.br"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
+      # - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.delayBeforeCheck=5"
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "873:873"
+    configs:
+      - source: cf-dns-api-token
+        target: /etc/cf-dns-api-token.txt
+      - source: traefik-users-file
+        target: /etc/traefik-users-file.txt
+    environment:
+      - CF_DNS_API_TOKEN_FILE=/etc/cf-dns-api-token.txt
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "traefik-data:/data/"
+    networks:
+      - traefik
+    deploy:
+      mode: global
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.traefik.tls=true"
+        - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+        - "traefik.http.routers.traefik.rule=Host(`traefik.opensuse.net.br`)"
+        - "traefik.http.routers.traefik.entrypoints=http,https"
+        - "traefik.http.routers.traefik.service=api@internal"
+        - "traefik.http.services.traefik.loadbalancer.server.port=8088"
+        - "traefik.http.routers.traefik.middlewares=auth"
+        - "traefik.http.middlewares.auth.basicauth.realm=Traefik Dashboard"
+        - "traefik.http.middlewares.test-auth.basicauth.usersfile=/etc/traefik-users-file.txt"
+      placement:
+        constraints:
+          - node.role == manager
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: any
+
+networks:
+  traefik:
+    external: true
+
+volumes:
+  traefik-data:
+
+configs:
+  cf-dns-api-token:
+    external: true
+  traefik-users-file:
+    external: true

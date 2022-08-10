@@ -1,0 +1,81 @@
+#
+# Mirror Leap 15.3, 15.4 and Tumbleweed
+# This will use ~850 GB
+#
+
+# Ignore non standard archtectures
+
+- **/i586/
+- **/armv6hl/
+- **/aarch64_ilp32/
+- **/ppc/
+# - **/ppc64/
+# - **/ppc64le/
+# - **/s390x/
+# - **/zsystems/
+
+# Ignore EOL versions
+# Some paths may still include old 42.x and 15.x links
+# Update this once CURRENT reaches EOL
+
+- **/leap/42.2/
+- **/leap/42.3/
+- **/leap/15.0/
+- **/leap/15.0-Current/
+- **/leap/15.1/
+- **/leap/15.2/
+
+# Ignore test paths
+
+- **/leap/15.2-test/
+- **/leap/15.3-test/
+- **/leap/15.4-test/
+
+# Ignore 15.3 ISOs and appliances
+
+- **/leap/15.3/live
+- **/leap/15.3/appliances/
+- **/leap/15.3/iso/
+
+# Ignore NEXT versions
+# Update this once NEXT is GA
+
+- **/leap/15.5/
+- **/leap/15.6/
+
+# Mirror Leap distribution repositories (oss, non-oss)
+
++ distribution/
++ distribution/leap/
++ distribution/leap/**
++ distribution/openSUSE-current
++ distribution/openSUSE-stable
+
+# Mirror update repositories (oss, non-oss)
+
++ update/
++ update/leap/
++ update/leap/**
++ update/openSUSE-current
++ update/openSUSE-stable
++ update/openSUSE-non-oss-current
++ update/tumbleweed
++ update/tumbleweed-non-oss
+
+# Mirror Tumbleweed repositories (oss, non-oss)
+
++ tumbleweed/
++ tumbleweed/**
+
+# Mirror TW Updates (minimal repo)
+# Requires:
+#   ln -s /storage/opensuse/repositories /srv/ftp/pub/opensuse/repositories
+
++ repositories
++ repositories/openSUSE:
++ repositories/openSUSE:/Factory:
++ repositories/openSUSE:/Factory:/Update
++ repositories/openSUSE:/Factory:/Update/standard
++ repositories/openSUSE:/Factory:/Update/standard/**
+
+- *
