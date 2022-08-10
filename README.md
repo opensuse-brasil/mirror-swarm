@@ -4,6 +4,7 @@ openSUSE Brazil Docker Swarm deployment
 
 ## Assumptions
 
+- The storage disk has at least 1 TB free
 - The host path where files are going to be stored is `/storage/opensuse`
 - The owner of `/storage/opensuse` is the user:groud defined by `RSYNC_CHOWN`
 - The Swarm cluster is empty
