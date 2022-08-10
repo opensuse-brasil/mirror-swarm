@@ -45,17 +45,19 @@ Create a config named `rsync-include` that will hold the rsync include pattern o
 docker config create rsync-include rsync-include.txt
 ```
 
-Create a config named `cf-dns-api-token` contains the CF API Token.
+Create a config named `cf-dns-api-token` that contains the [CF API Token](https://developers.cloudflare.com/api/tokens/create/).
 
 ```bash
 docker config create cf-dns-api-token cf-dns-api-token.txt
 ```
 
-Create a config named `traefik-users-file` contains the `user:password` for Traefik Web UI.
+Create a config named `traefik-users-file` that contains the `user:password` for Traefik Web UI.
 
 ```bash
 docker config create traefik-users-file traefik-users-file.txt
 ```
+
+> Use `htpasswd -n <user>` to create an encoded password.
 
 ### Deployment
 
