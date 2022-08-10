@@ -64,8 +64,14 @@ Deploy Traefik first as other services may depend on it.
 docker stack deploy -c traefik.yml traefik
 ```
 
+Deploy CronJob as other services may depend on it.
+
+```bash
+docker stack deploy -c cronjob.yml cronjob
+```
+
 Deploy mirror services.
 
 ```bash
-docker stack deploy -c services.yml opensuse-mirror
+docker stack deploy -c mirror.yml mirror
 ```
