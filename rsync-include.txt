@@ -27,6 +27,8 @@
 
 # Ignore test paths
 
+- **/leap/15.0-test/
+- **/leap/15.1-test/
 - **/leap/15.2-test/
 - **/leap/15.3-test/
 - **/leap/15.4-test/
