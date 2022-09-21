@@ -48,6 +48,11 @@
 - **/update/leap/15.3/backports/src/
 - **/update/leap/15.3/backports_debug/
 
+# Ignore some archs just for 15.3
+
+- **/update/leap/15.3/sle/aarch64/
+- **/update/leap/15.3/sle/ppc64le/
+
 # Ignore NEXT versions
 # Update this once NEXT is GA
 
