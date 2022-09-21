@@ -92,7 +92,7 @@ services:
       labels:
         - "swarm.cronjob.enable=true"
         # run every hour
-        - "swarm.cronjob.schedule=0 */1 * * *"
+        - "swarm.cronjob.schedule=*/15 * * * *"
         - "swarm.cronjob.skip-running=true"
         # limit replicas to one, rsync can't run in parallel
         - "swarm.cronjob.replicas=1"
