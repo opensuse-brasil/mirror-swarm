@@ -81,6 +81,14 @@ services:
     deploy:
       mode: replicated
       replicas: 0
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 1024M
+        reservations:
+          cpus: '0.20'
+          memory: 128M
+
       labels:
         - "swarm.cronjob.enable=true"
         # run every hour
