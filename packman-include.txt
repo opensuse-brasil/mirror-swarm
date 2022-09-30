@@ -1,0 +1,18 @@
+#
+# Mirror parts of Packman
+# This will use ~30 GB
+#
+
++ SLE_15/
++ SLE_15/**
+
++ openSUSE_Leap_15.3/
++ openSUSE_Leap_15.3/**
+
++ openSUSE_Leap_15.4/
++ openSUSE_Leap_15.4/**
+
++ openSUSE_Tumbleweed/
++ openSUSE_Tumbleweed/**
+
+- *

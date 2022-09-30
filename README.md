@@ -11,23 +11,9 @@ openSUSE Brazil Docker Swarm deployment
 - The load balancer/proxy/ingress is Traefik
 - The domain name is configured, uses CloudFlare DNS and Let's Encrypt for certificates
 
-## Deployment
+## Setup
 
-The deployment must follow an order, as services depend on external configuration.
-
-### Volume
-
-Create a volume named `opensuse` that points to `/storage/opensuse`
-
-```bash
-docker volume create --name opensuse --opt type=none --opt device=/storage/opensuse --opt o=bind
-```
-
-Create a volume named `fancyindex`, this allows to edit the nginx fancyindex HTMLs.
-
-```bash
-docker volume create fancyindex
-```
+Before deployment you need to setup and configure some items.
 
 ### Network
 
@@ -37,21 +23,31 @@ Create a network for Traefik and all services.
 docker network create --driver overlay traefik
 ```
 
-### Configuration
+### Volume
 
-Create a config named `rsync-include` that will hold the rsync include pattern of what will be mirrored from openSUSE servers.
+Create the data volumes.
 
 ```bash
-docker config create rsync-include rsync-include.txt
+docker volume create --name opensuse-data --opt type=none --opt device=/storage/opensuse --opt o=bind
+docker volume create --name packman-data --opt type=none --opt device=/storage/packman --opt o=bind
 ```
 
-Create a config named `cf-dns-api-token` that contains the [CF API Token](https://developers.cloudflare.com/api/tokens/create/).
+Create the fancyindex volumes, this allows to edit the nginx fancyindex HTMLs.
+
+```bash
+docker volume create opensuse-fancyindex
+docker volume create packman-fancyindex
+```
+
+### Configuration
+
+Create a config that contains the [CF API Token](https://developers.cloudflare.com/api/tokens/create/).
 
 ```bash
 docker config create cf-dns-api-token cf-dns-api-token.txt
 ```
 
-Create a config named `traefik-users-file` that contains the `user:password` for Traefik Web UI.
+Create a config that contains the `user:password` for Traefik Web UI.
 
 ```bash
 docker config create traefik-users-file traefik-users-file.txt
@@ -59,7 +55,14 @@ docker config create traefik-users-file traefik-users-file.txt
 
 > Use `htpasswd -n <user>` to create an encoded password.
 
-### Deployment
+Create the configs that will hold the rsync include pattern.
+
+```bash
+docker config create opensuse-rsync-include opensuse-include.txt
+docker config create packman-rsync-include packman-include.txt
+```
+
+## Deployment
 
 Deploy Traefik first as other services may depend on it.
 
@@ -76,5 +79,6 @@ docker stack deploy -c cronjob.yml cronjob
 Deploy mirror services.
 
 ```bash
-docker stack deploy -c mirror.yml mirror
+docker stack deploy -c opensuse-mirror.yml opensuse
+docker stack deploy -c packman-mirror.yml packman
 ```

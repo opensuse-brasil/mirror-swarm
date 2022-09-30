@@ -1,0 +1,87 @@
+version: "3.5"
+
+services:
+  packman-nginx-download:
+    image: opensusebr/mirror-nginx-download
+    volumes:
+      - packman-fancyindex:/srv/www/fancyindex
+      - packman-data:/srv/pub/opensuse/
+    networks:
+      - traefik
+    ulimits:
+      nofile:
+        soft: 120000
+        hard: 120000
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 1024M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik
+        # https config
+        - traefik.http.routers.packman-https.rule=Host(`packman.opensuse.net.br`)
+        - traefik.http.routers.packman-https.entrypoints=https
+        - traefik.http.routers.packman-https.tls=true
+        - traefik.http.routers.packman-https.tls.certresolver=letsencrypt
+        - traefik.http.routers.packman-https.service=packman
+        # http config
+        - traefik.http.routers.packman-http.rule=Host(`packman.opensuse.net.br`)
+        - traefik.http.routers.packman-http.entrypoints=http
+        - traefik.http.routers.packman-http.service=packman
+        # service config
+        - traefik.http.services.packman.loadbalancer.server.port=80
+
+  packman-rsync-transfer:
+    image: opensusebr/mirror-rsync-transfer
+    environment:
+      RSYNC_HOST: mirror.karneval.cz
+      RSYNC_MODULE: packman
+      RSYNC_PATH: /suse/
+      RSYNC_USER: packman
+      RSYNC_PASSWORD:
+    configs:
+      - source: packman-rsync-include
+        target: /etc/rsync-include.txt
+    volumes:
+      - packman-data:/srv/pub/opensuse/
+    networks:
+      - traefik
+    deploy:
+      mode: replicated
+      replicas: 0
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 1024M
+        reservations:
+          cpus: '0.20'
+          memory: 128M
+      labels:
+        - "swarm.cronjob.enable=true"
+        # run every 2 hours
+        - "swarm.cronjob.schedule=0 */2 * * *"
+        - "swarm.cronjob.skip-running=true"
+        # limit replicas to one, rsync can't run in parallel
+        - "swarm.cronjob.replicas=1"
+      restart_policy:
+        condition: none
+
+configs:
+  packman-rsync-include:
+    external: true
+
+networks:
+  traefik:
+    external: true
+
+volumes:
+  packman-fancyindex:
+    external: true
+  packman-data:
+    external: true

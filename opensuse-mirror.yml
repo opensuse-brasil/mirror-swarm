@@ -1,11 +1,11 @@
 version: "3.5"
 
 services:
-  nginx-download:
+  opensuse-nginx-download:
     image: opensusebr/mirror-nginx-download
     volumes:
-      - fancyindex:/srv/www/fancyindex
-      - opensuse:/srv/pub/opensuse/
+      - opensuse-fancyindex:/srv/www/fancyindex
+      - opensuse-data:/srv/pub/opensuse/
     networks:
       - traefik
     ulimits:
@@ -37,10 +37,10 @@ services:
         # service config
         - traefik.http.services.download.loadbalancer.server.port=80
 
-  rsync-server:
+  opensuse-rsync-server:
     image: opensusebr/mirror-rsync-server
     volumes:
-      - opensuse:/srv/pub/opensuse/
+      - opensuse-data:/srv/pub/opensuse/
     networks:
       - traefik
     deploy:
@@ -62,20 +62,19 @@ services:
         # service config
         - traefik.tcp.services.content.loadbalancer.server.port=873
 
-  rsync-transfer:
+  opensuse-rsync-transfer:
     image: opensusebr/mirror-rsync-transfer
     environment:
-      # RSYNC_HOST: rsync.opensuse.org
       RSYNC_HOST: stage.opensuse.org
-      RSYNC_MODULE: opensuse-full-with-factory
+      RSYNC_MODULE: opensuse-full-really-everything-including-repositories
       RSYNC_PATH: /opensuse/
       RSYNC_USER: opensuse
       RSYNC_PASSWORD:
     configs:
-      - source: rsync-include
+      - source: opensuse-rsync-include
         target: /etc/rsync-include.txt
     volumes:
-      - opensuse:/srv/pub/opensuse/
+      - opensuse-data:/srv/pub/opensuse/
     networks:
       - traefik
     deploy:
@@ -88,10 +87,9 @@ services:
         reservations:
           cpus: '0.20'
           memory: 128M
-
       labels:
         - "swarm.cronjob.enable=true"
-        # run every hour
+        # run every 15 min
         - "swarm.cronjob.schedule=*/15 * * * *"
         - "swarm.cronjob.skip-running=true"
         # limit replicas to one, rsync can't run in parallel
@@ -100,7 +98,7 @@ services:
         condition: none
 
 configs:
-  rsync-include:
+  opensuse-rsync-include:
     external: true
 
 networks:
@@ -108,7 +106,7 @@ networks:
     external: true
 
 volumes:
-  fancyindex:
+  opensuse-fancyindex:
     external: true
-  opensuse:
+  opensuse-data:
     external: true
