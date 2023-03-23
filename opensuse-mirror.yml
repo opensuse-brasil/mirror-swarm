@@ -65,7 +65,7 @@ services:
   opensuse-rsync-transfer:
     image: opensusebr/mirror-rsync-transfer
     environment:
-      RSYNC_HOST: stage.opensuse.org
+      RSYNC_HOST: stage-main-repos.opensuse.org
       RSYNC_MODULE: opensuse-full-really-everything-including-repositories
       RSYNC_PATH: /opensuse/
       RSYNC_USER: opensuse
