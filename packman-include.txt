@@ -6,11 +6,17 @@
 + SLE_15/
 + SLE_15/**
 
-+ openSUSE_Leap_15.3/
-+ openSUSE_Leap_15.3/**
-
 + openSUSE_Leap_15.4/
 + openSUSE_Leap_15.4/**
+
++ openSUSE_Leap_15.5/
++ openSUSE_Leap_15.5/**
+
++ openSUSE_Leap_15.6/
++ openSUSE_Leap_15.6/**
+
++ openSUSE_Slowroll/
++ openSUSE_Slowroll/**
 
 + openSUSE_Tumbleweed/
 + openSUSE_Tumbleweed/**
