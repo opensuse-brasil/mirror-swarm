@@ -36,10 +36,19 @@
 
 # Ignore Leap Micro
 - **/leap-micro/**/
+- **/leap-micro-current/**/
+
+# Ignore Slowroll Micro
+- **/slowroll/**/
 
 # Ignore appliance images
-# - **/leap/**/appliances
+# - **/leap/**/appliances/
 # - **/tumbleweed/appliances/
+
+# Ignore ISO images
+# - **/leap/**/iso/
+# - **/slowroll/iso/
+# - **/tumbleweed/iso/
 
 # Ignore NEXT versions
 # Update this once Leap reaches GA
@@ -47,6 +56,7 @@
 - **/leap/15.6/
 - **/leap/15.7/
 - **/leap/15.8/
+- **/leap/16.0/
 
 # Mirror distribution repositories (oss, non-oss)
 
@@ -57,6 +67,11 @@
 
 + update/
 + update/**
+
+# Mirror Slowroll repositories (oss, non-oss)
+
+# + slowroll/
+# + slowroll/**
 
 # Mirror tumbleweed repositories (oss, non-oss)
 
