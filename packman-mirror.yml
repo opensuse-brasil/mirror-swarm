@@ -41,6 +41,7 @@ services:
     image: opensusebr/mirror-rsync-transfer
     environment:
       RSYNC_HOST: mirror.karneval.cz
+      # RSYNC_HOST: ftp.halifax.rwth-aachen.de
       RSYNC_MODULE: packman
       RSYNC_PATH: /suse/
       RSYNC_USER: packman
