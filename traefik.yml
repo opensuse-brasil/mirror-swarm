@@ -2,7 +2,7 @@ version: "3.5"
 
 services:
   traefik:
-    image: "traefik:v2.4"
+    image: "traefik:v2.11"
     command:
       # - "--accesslog"
       - "--log.level=ERROR"
