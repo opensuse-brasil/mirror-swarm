@@ -1,8 +1,7 @@
 version: "3.5"
-
 services:
   opensuse-nginx-download:
-    image: opensusebr/mirror-nginx-download
+    image: ghcr.io/opensuse-brasil/nginx-download:latest
     volumes:
       - opensuse-fancyindex:/srv/www/fancyindex
       - opensuse-data:/srv/pub/opensuse/
@@ -36,9 +35,8 @@ services:
         - traefik.http.routers.download-http.service=download
         # service config
         - traefik.http.services.download.loadbalancer.server.port=80
-
   opensuse-rsync-server:
-    image: opensusebr/mirror-rsync-server
+    image: ghcr.io/opensuse-brasil/rsync-server:latest
     volumes:
       - opensuse-data:/srv/pub/opensuse/
     networks:
@@ -61,9 +59,8 @@ services:
         - traefik.tcp.routers.content-tcp.service=content
         # service config
         - traefik.tcp.services.content.loadbalancer.server.port=873
-
   opensuse-rsync-transfer:
-    image: opensusebr/mirror-rsync-transfer
+    image: ghcr.io/opensuse-brasil/rsync-transfer:latest
     environment:
       RSYNC_HOST: stage-main-repos.opensuse.org
       RSYNC_MODULE: opensuse-full-really-everything-including-repositories

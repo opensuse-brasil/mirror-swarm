@@ -1,15 +1,15 @@
 version: "3.5"
-
 services:
   traefik:
-    image: "traefik:v2.11"
+    image: "traefik:v3"
     command:
       # - "--accesslog"
       - "--log.level=ERROR"
       - "--api=true"
       - "--api.dashboard=true"
       - "--providers.docker=true"
-      - "--providers.docker.swarmmode=true"
+      - "--providers.swarm=true"
+      #- "--providers.docker.swarmmode=true"
       - "--providers.docker.watch=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.http.address=:80"
@@ -53,7 +53,7 @@ services:
         - "traefik.http.services.traefik.loadbalancer.server.port=8088"
         - "traefik.http.routers.traefik.middlewares=auth"
         - "traefik.http.middlewares.auth.basicauth.realm=Traefik Dashboard"
-        - "traefik.http.middlewares.test-auth.basicauth.usersfile=/etc/traefik-users-file.txt"
+        - "traefik.http.middlewares.auth.basicauth.usersfile=/etc/traefik-users-file.txt"
       placement:
         constraints:
           - node.role == manager

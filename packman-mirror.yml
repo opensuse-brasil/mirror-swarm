@@ -1,8 +1,7 @@
 version: "3.5"
-
 services:
   packman-nginx-download:
-    image: opensusebr/mirror-nginx-download
+    image: ghcr.io/opensuse-brasil/nginx-download:latest
     volumes:
       - packman-fancyindex:/srv/www/fancyindex
       - packman-data:/srv/pub/opensuse/
@@ -36,9 +35,8 @@ services:
         - traefik.http.routers.packman-http.service=packman
         # service config
         - traefik.http.services.packman.loadbalancer.server.port=80
-
   packman-rsync-transfer:
-    image: opensusebr/mirror-rsync-transfer
+    image: ghcr.io/opensuse-brasil/rsync-transfer:latest
     environment:
       RSYNC_HOST: mirror.karneval.cz
       # RSYNC_HOST: ftp.halifax.rwth-aachen.de

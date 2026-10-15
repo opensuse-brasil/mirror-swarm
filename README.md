@@ -35,8 +35,8 @@ docker volume create --name packman-data --opt type=none --opt device=/storage/p
 Create the fancyindex volumes, this allows to edit the nginx fancyindex HTMLs.
 
 ```bash
-docker volume create opensuse-fancyindex
-docker volume create packman-fancyindex
+docker volume create --name opensuse-fancyindex --opt type=none --opt device=/storage/fancyindex/opensuse --opt o=bind
+docker volume create --name packman-fancyindex --opt type=none --opt device=/storage/fancyindex/packman --opt o=bind
 ```
 
 ### Configuration
